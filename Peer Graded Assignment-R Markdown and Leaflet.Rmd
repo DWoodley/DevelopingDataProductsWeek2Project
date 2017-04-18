@@ -1,0 +1,42 @@
+---
+title: "Major New York City Airports"
+author: "Dean Woodley"
+date: "April 16, 2017"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##Circles are proportionate to passengers served.
+
+```{r, echo = FALSE,comment = ""}
+paste("Created: ",date())
+library(leaflet)
+#Lat = 40.778703, -73.876898 LGA
+#Lat = 40.647759, -73.775231 JFK
+#Lat = 40.690652, -74.178330 EWR
+#Lat = 41.068317, -73.708678 HPN (Westchester County)
+#Lat = 40.789849, -73.097571 LONG ISLAND ISLIP MACARTHUR AIRPORT (ISP)
+#Lat = 41.507934, -74.100044 Steward 
+Lat <- c(40.778703,40.647759,40.690652,41.068317,40.789849,41.507934)
+Lon <- -c(73.876898,73.775231,74.178330,73.708678,73.097571,74.100044)
+Nms <- c("Laguardia (LGA)","J.F.Kennedy (JFK)","Newark (EWR)","Westchester County (HPN)","Islip Macarthur (ISP)","Steward (SWF)")
+att <- paste("Major New York City Airports:",date(),"by: Dean Woodley")
+pas <- c(29786769,58956288,40351331,1468851,608653,281754)
+repyr <- c("2016","2016","2016","2015","2013","2015")
+
+Nms <- paste(Nms,": ",as.character(pas)," passengers ","(",repyr,")",".",sep="")
+
+map <- leaflet(width=1000,height=600) %>% 
+    addTiles(attribution = att) %>%
+    addCircles(lng=Lon,lat=Lat,label=Nms,radius=pas/5000,weight=2) %>%
+    addCircles(lng=Lon,lat=Lat,color="#000",opacity = 1,radius=0,label=Nms) %>%
+    addMarkers(lng=Lon,lat=Lat,label=Nms) %>%
+    addMeasure()
+
+
+map
+```
